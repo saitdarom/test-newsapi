@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Jobs;
+
+use App\Contracts\Parser;
+use App\Events\GetNewsEvent;
+use App\Models\News;
+use App\Services\NewsService;
+use App\Services\Parsers\NewsApi\NewsApiParser;
+
+class GetNewsJob extends Job
+{
+    private $parser;
+    private $newsService;
+    private $setting;
+
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
+    public function __construct(Parser $parser, array $setting = [])
+    {
+        $this->parser = $parser;
+        $this->newsService = new NewsService();
+        $this->setting = array_merge(config('parser.news'), $setting);
+    }
+
+
+    /* @TODO Можно разделять логику на короткие задачи через события. */
+
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        if (isset($this->setting['titles']))
+            foreach ($this->setting['titles'] as $title) {
+                if ($result = $this->parser->getNewsItemByQuery($title)) {
+                    $this->newsService->store($result);
+//                    var_dump('получил '.$title);
+                } else {
+//                    var_dump('не получил'.$title);
+                }
+            }
+    }
+}
