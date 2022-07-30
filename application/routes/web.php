@@ -13,6 +13,7 @@
 |
 */
 
+
 $router->get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
 
 $router->group(['namespace' => 'Api', 'prefix' => 'api', 'as' => 'api'], function () use ($router) {
