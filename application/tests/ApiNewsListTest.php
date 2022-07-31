@@ -5,6 +5,7 @@ namespace Tests;
 use App\Exceptions\Parser\Licence;
 use App\Services\NewsService;
 use App\Services\Parsers\NewsApi\NewsApiParser;
+use App\Services\SourceService;
 use Carbon\Carbon;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
@@ -23,10 +24,12 @@ class ApiNewsListTest extends TestCase
     {
         $parser = new NewsApiParser();
         $newsService = new NewsService();
+        $sourceService = new SourceService();
 
         //Отлов ошибки лицензии
         try{
-            foreach ($parser->getNewItemsByQuery('Bitcoin') as $item) $newsService->store($item);
+            foreach ($parser->getNewItemsByQuery('Bitcoin') as $item)
+                $newsService->store($sourceService->store($item['source']), $item['news']);
         }catch (Licence $e){}
 
 
