@@ -27,9 +27,6 @@ class GetNewsJob extends Job
     }
 
 
-    /* @TODO Можно разделять логику на короткие задачи через события. */
-
-
     /**
      * Execute the job.
      *
@@ -39,7 +36,9 @@ class GetNewsJob extends Job
     {
         if (isset($this->setting['titles']))
             foreach ($this->setting['titles'] as $title) {
-                foreach ($this->parser->getNewItemsByQuery($title) as $item) $this->newsService->store($item);
+                foreach ($this->parser->getNewItemsByQuery($title) as $item) {
+                    $this->newsService->store($item);
+                }
             }
     }
 }

@@ -77,13 +77,15 @@ class NewsApiParser implements Parser
                 'source_id' => $item->source->id,
                 'name' => $item->source->name,
             ],
-            "author" => $item->author,
-            "title" => $item->title,
-            "description" => $item->description,
-            "url" => $item->url,
-            "url_to_image" => $item->urlToImage,
-            "published_at" => Carbon::parse($item->publishedAt),
-            "content" => $item->content,
+            'news'=>[
+                "author" => $item->author,
+                "title" => $item->title,
+                "description" => $item->description,
+                "url" => $item->url,
+                "url_to_image" => $item->urlToImage,
+                "published_at" => Carbon::parse($item->publishedAt),
+                "content" => $item->content,
+            ],
         ];
     }
 }

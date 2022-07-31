@@ -32,7 +32,7 @@ class NewsService
 
     public function store(array $data)
     {
-        $news = News::findByUrl($data['url']);
+        $news = News::findByUrl($data['news']['url']);
         if ($news->exists()) return $news;
 
 
@@ -43,8 +43,8 @@ class NewsService
             $source = Source::findByName($data['source']['name']);
         if (!$source->exists()) $source = Source::create($data['source']);
 
-        $data['source_id'] = $source->id;
-        $news = News::create($data);
+        $data['news']['source_id'] = $source->id;
+        $news = News::create( $data['news']);
         DB::commit();
 
         return $news;
