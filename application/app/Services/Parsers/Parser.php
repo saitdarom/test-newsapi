@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Contracts;
+namespace App\Services\Parsers;
 
 
 
@@ -9,7 +9,7 @@ interface Parser
 {
     /**
      * Перебирает значения по условиям запроса по всему массиву данных. Находит элементы, которого еще не было в БД. Отдает.
-     * Метод нужен для прохода первый раз. Для сбора всех статей.
+     * Для сбора всех статей.
 
      * @param string $query
      * @return array

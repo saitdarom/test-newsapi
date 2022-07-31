@@ -30,24 +30,12 @@ class NewsService
         return $news;
     }
 
-    public function store(array $data)
+    public function store(Source $source, array $data)
     {
-        $news = News::findByUrl($data['news']['url']);
+        $news = News::findByUrl($data['url']);
         if ($news->exists()) return $news;
-
-
-        DB::beginTransaction();
-        if ($data['source']['source_id'])
-            $source = Source::findBySourceId($data['source']['source_id']);
-        else
-            $source = Source::findByName($data['source']['name']);
-        if (!$source->exists()) $source = Source::create($data['source']);
-
-        $data['news']['source_id'] = $source->id;
-        $news = News::create( $data['news']);
-        DB::commit();
-
-        return $news;
+        $data['source_id'] = $source->id;
+        return News::create( $data);
     }
 
 }
