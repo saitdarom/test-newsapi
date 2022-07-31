@@ -8,6 +8,8 @@
 6. Создать API для вывода новостей в формате JSON с возможностью группировки по источнику новости и дате и теме.
 
 
+`docker rm -f $(docker ps -qa)`
+`docker compose up --build`
 
 `docker exec -it crypto-backend php artisan queue:work --tries=1 --memory=50 --timeout=3600`
 
