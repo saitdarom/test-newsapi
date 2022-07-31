@@ -16,4 +16,6 @@ https://lumen.laravel.com/docs/9.x/validation
 
 # docker exec -it crypto-backend ./vendor/bin/phpunit
 
+# docker exec -it crypto-backend artisan queue:work --tries=1 --memory=50 --timeout=3600
+
 

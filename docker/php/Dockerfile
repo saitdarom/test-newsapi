@@ -25,8 +25,6 @@ ENV PATH "$PATH:/root/.composer/vendor/bin"
 
 WORKDIR /application
 
-COPY crypto.ini /etc/supervisor/conf.d
-
 CMD php-fpm -R
 
 EXPOSE 9000
