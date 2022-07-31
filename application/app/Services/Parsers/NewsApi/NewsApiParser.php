@@ -16,10 +16,7 @@ class NewsApiParser implements Parser
         $this->connector = new Connector();
     }
 
-    /**
-     * @param string $query
-     * @return array
-     */
+
     public function getNewItemsByQuery(string $query, array $setting = []): array
     {
         $setting = array_merge(['language' => 'ru', 'sortBy' => 'publishedAt', 'searchIn' => 'title'], $setting);
@@ -41,11 +38,6 @@ class NewsApiParser implements Parser
         return $items;
     }
 
-
-    /**
-     * @param string $query
-     * @return array
-     */
     public function getLastNewItemsByQuery(string $query): array
     {
         return $this->getNewItemsByQuery($query, ['from' => Carbon::now()->addHours(-1)->toIso8601String()]);
@@ -56,6 +48,7 @@ class NewsApiParser implements Parser
         if (!$countForPage) return 1;
         return ceil($total / $countForPage);
     }
+
 
     private function itemDTO(\stdClass $item): array
     {
