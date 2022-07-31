@@ -4,6 +4,7 @@
 namespace App\Services\Parsers\NewsApi;
 
 
+use App\Exceptions\Parser\Content;
 use App\Exceptions\Parser\HttpStatus;
 use App\Exceptions\Parser\Licence;
 use Illuminate\Support\Facades\Http;
@@ -28,19 +29,24 @@ class Connector
     public function get(string $url, array $arr = [])
     {
         //Кеш временное решение. Лицензии нет. Чтобы уменьшить вероятность проблемы.
-        return Cache::remember('newsapi.' . md5($url) . md5(json_encode($arr)), 86400, function () use ($url, $arr) {
+        return Cache::remember('getnewsapi.' . md5($url) . md5(json_encode($arr)), 86400, function () use ($url, $arr) {
             $this->validateError($response = Http::acceptJson()->withHeaders(["Accept" => "application/json", "X-Api-Key" => $this->key])->get($this->url . $url, $arr));
-            return json_decode($response->getBody());
+            return $this->getJsonObj($response);
         });
+    }
+
+    private function getJsonObj($response)
+    {
+        try {
+            return json_decode($response->getBody());
+        } catch (\Throwable $e) {
+            throw new Content();
+        }
     }
 
     private function validateError($response)
     {
-        try {
-            $result = json_decode($response->getBody());
-        } catch (\Throwable $e) {
-            ///
-        }
+        $result = $this->getJsonObj($response);
 
         if ($result->status == 'error')
             throw new Licence();
