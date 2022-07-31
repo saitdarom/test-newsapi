@@ -7,8 +7,10 @@
 5. Сделать job для парсинга новостей с интервалом одна новость по каждой теме в минуту
 6. Создать API для вывода новостей в формате JSON с возможностью группировки по источнику новости и дате и теме.
 
+`Ключ можно изменить в конфиге newsapi.key`
 
 `docker rm -f $(docker ps -qa)`
+
 `docker compose up --build`
 
 `docker exec -it crypto-backend php artisan queue:work --tries=1 --memory=50 --timeout=3600`
