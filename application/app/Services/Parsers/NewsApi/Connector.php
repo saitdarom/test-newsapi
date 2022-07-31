@@ -35,6 +35,9 @@ class Connector
         });
     }
 
+    /**
+     * @throws Content
+     */
     private function getJsonObj($response)
     {
         try {
@@ -44,6 +47,11 @@ class Connector
         }
     }
 
+    /**
+     * @throws Licence
+     * @throws Content
+     * @throws HttpStatus
+     */
     private function validateError($response)
     {
         $result = $this->getJsonObj($response);
