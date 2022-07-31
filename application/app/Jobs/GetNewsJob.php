@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Events\GetNewsEvent;
 use App\Exceptions\Parser\Licence;
 use App\Services\NewsService;
 use App\Services\Parsers\Parser;

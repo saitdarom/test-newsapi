@@ -7,9 +7,9 @@ namespace App\Services\Parsers\NewsApi;
 use App\Exceptions\Parser\Content;
 use App\Exceptions\Parser\HttpStatus;
 use App\Exceptions\Parser\Licence;
-use Illuminate\Support\Facades\Http;
 use Cache;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
 
 class Connector
 {

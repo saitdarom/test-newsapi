@@ -2,11 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\GetNewsJob;
-use App\Models\News;
-use App\Models\Source;
-use App\Services\Parsers\NewsApi\NewsApiParser;
-use Event;
 
 class HomeController extends Controller
 {

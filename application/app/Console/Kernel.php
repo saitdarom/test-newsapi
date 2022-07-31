@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\GetNewsJob;
 use App\Services\Parsers\NewsApi\NewsApiParser;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;

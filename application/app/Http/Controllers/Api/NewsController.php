@@ -6,9 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\News\ListResource;
 use App\Services\NewsService;
 use Carbon\Carbon;
-use App\Events\GetNewsEvent;
 use Illuminate\Http\Request;
-
 
 class NewsController extends Controller
 {
