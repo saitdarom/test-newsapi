@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class SourceService
 {
-    public function store(array $data)
+    public function store(array $data):Source
     {
         if ($data['source_id'])
             $source = Source::findBySourceId($data['source_id']);

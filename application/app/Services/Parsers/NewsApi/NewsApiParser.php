@@ -51,13 +51,13 @@ class NewsApiParser implements Parser
         return $this->getNewItemsByQuery($query, ['from' => Carbon::now()->addHours(-1)->toIso8601String()]);
     }
 
-    private function getPagesCount($total, $countForPage)
+    private function getPagesCount(int $total, int $countForPage): int
     {
         if (!$countForPage) return 1;
         return ceil($total / $countForPage);
     }
 
-    private function itemDTO($item)
+    private function itemDTO(\stdClass $item): array
     {
         return [
             "source" => [

@@ -9,6 +9,7 @@ use App\Exceptions\Parser\HttpStatus;
 use App\Exceptions\Parser\Licence;
 use Illuminate\Support\Facades\Http;
 use Cache;
+use Illuminate\Http\Client\Response;
 
 class Connector
 {
@@ -20,13 +21,13 @@ class Connector
         $this->key = config('newsapi.key');
     }
 
-    public function everything(array $params = [])
+    public function everything(array $params = []):\stdClass
     {
         return $this->get('/everything', $params);
     }
 
 
-    public function get(string $url, array $arr = [])
+    public function get(string $url, array $arr = []):\stdClass
     {
         //Кеш временное решение. Лицензии нет. Чтобы уменьшить вероятность проблемы.
         return Cache::remember('getnewsapi.' . md5($url) . md5(json_encode($arr)), 86400, function () use ($url, $arr) {
@@ -38,7 +39,7 @@ class Connector
     /**
      * @throws Content
      */
-    private function getJsonObj($response)
+    private function getJsonObj(Response $response):\stdClass
     {
         try {
             return json_decode($response->getBody());
@@ -52,14 +53,13 @@ class Connector
      * @throws Content
      * @throws HttpStatus
      */
-    private function validateError($response)
+    private function validateError(Response $response):void
     {
-        $result = $this->getJsonObj($response);
-
-        if ($result->status == 'error')
-            throw new Licence();
-
         if ($response->status() !== 200)
             throw new HttpStatus();
+
+        $result = $this->getJsonObj($response);
+        if ($result->status == 'error')
+            throw new Licence();
     }
 }

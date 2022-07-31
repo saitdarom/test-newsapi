@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 class NewsController extends Controller
 {
 
-    public function list(Request $request, NewsService $service)
+    public function list(Request $request, NewsService $service):ListResource
     {
         // https://lumen.laravel.com/docs/9.x/validation
         // По хорошему реквест/валидацию нужно выделить в отдельный класс.

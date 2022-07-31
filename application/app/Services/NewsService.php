@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class NewsService
 {
 
-    public function list(Request $request)
+    public function list(Request $request):\Illuminate\Pagination\LengthAwarePaginator
     {
         $news = News::query();
         if ($request->has('title'))
@@ -30,7 +30,7 @@ class NewsService
         return $news;
     }
 
-    public function store(Source $source, array $data)
+    public function store(Source $source, array $data):News
     {
         $news = News::findByUrl($data['url']);
         if ($news->exists()) return $news;
