@@ -9,11 +9,11 @@
 
 
 
-# docker exec -it crypto-backend php artisan queue:work --tries=1 --memory=50 --timeout=3600
+`docker exec -it crypto-backend php artisan queue:work --tries=1 --memory=50 --timeout=3600`
 
-# docker exec -it crypto-backend php artisan migrate --seed
+`docker exec -it crypto-backend php artisan migrate --seed`
 
-# docker exec -it crypto-backend ./vendor/bin/phpunit
+`docker exec -it crypto-backend ./vendor/bin/phpunit`
 
 
 
