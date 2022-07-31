@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Contracts\Parser;
 use App\Events\GetNewsEvent;
+use App\Exceptions\Parser\Licence;
 use App\Models\News;
 use App\Services\NewsService;
 use App\Services\Parsers\NewsApi\NewsApiParser;
@@ -36,9 +37,11 @@ class GetNewsJob extends Job
     {
         if (isset($this->setting['titles']))
             foreach ($this->setting['titles'] as $title) {
-                foreach ($this->parser->getNewItemsByQuery($title) as $item) {
-                    $this->newsService->store($item);
-                }
+                try{
+                    foreach ($this->parser->getNewItemsByQuery($title) as $item) {
+                        $this->newsService->store($item);
+                    }
+                }catch (Licence $e){}
             }
     }
 }
