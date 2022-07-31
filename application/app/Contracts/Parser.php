@@ -4,7 +4,6 @@
 namespace App\Contracts;
 
 
-use phpDocumentor\Reflection\Types\Boolean;
 
 interface Parser
 {
