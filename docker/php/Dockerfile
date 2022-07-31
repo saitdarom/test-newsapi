@@ -14,6 +14,7 @@ RUN apt-get update && apt-get upgrade -yq && \
     docker-php-ext-enable exif pcntl redis xmlrpc yaml && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 RUN docker-php-ext-install pgsql pdo pdo_pgsql
 
@@ -23,6 +24,8 @@ RUN composer global require tightenco/tlint
 ENV PATH "$PATH:/root/.composer/vendor/bin"
 
 WORKDIR /application
+
+COPY crypto.ini /etc/supervisor/conf.d
 
 CMD php-fpm -R
 
