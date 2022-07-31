@@ -4,6 +4,11 @@
 namespace App\Services\Parsers\NewsApi;
 
 
+use App\Exceptions\Parser\HttpStatus;
+use App\Exceptions\Parser\Licence;
+use Illuminate\Support\Facades\Http;
+use Cache;
+
 class Connector
 {
     private $key;
@@ -16,33 +21,31 @@ class Connector
 
     public function everything(array $params = [])
     {
-        return $this->get('/everything',$params);
+        return $this->get('/everything', $params);
     }
 
 
     public function get(string $url, array $arr = [])
     {
-        $url = $this->url . $url;
-        if ($arr)
-            $url .= '?' . http_build_query($arr);
+        //Кеш временное решение. Лицензии нет. Чтобы уменьшить вероятность проблемы.
+        return Cache::remember('newsapi.' . md5($url) . md5(json_encode($arr)), 86400, function () use ($url, $arr) {
+            $this->validateError($response = Http::acceptJson()->withHeaders(["Accept" => "application/json", "X-Api-Key" => $this->key])->get($this->url . $url, $arr));
+            return json_decode($response->getBody());
+        });
+    }
 
-        $ch = curl_init( $url);
-
-        $headers[] = "Accept: application/json";
-        $headers[] = "X-Api-Key: " . $this->key;
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $result = json_decode(curl_exec($ch));
-        curl_close($ch);
-
-        if($result->status=='error'){
-//            var_dump($result);
-            /*@TODO обработка ошибок. Пока часто по лицензии ошибка.*/
-            return null;
+    private function validateError($response)
+    {
+        try {
+            $result = json_decode($response->getBody());
+        } catch (\Throwable $e) {
+            ///
         }
 
-        return $result;
+        if ($result->status == 'error')
+            throw new Licence();
+
+        if ($response->status() !== 200)
+            throw new HttpStatus();
     }
 }

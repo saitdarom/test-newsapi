@@ -39,12 +39,7 @@ class GetNewsJob extends Job
     {
         if (isset($this->setting['titles']))
             foreach ($this->setting['titles'] as $title) {
-                if ($result = $this->parser->getNewsItemByQuery($title)) {
-                    $this->newsService->store($result);
-//                    var_dump('получил '.$title);
-                } else {
-//                    var_dump('не получил'.$title);
-                }
+                foreach ($this->parser->getNewItemsByQuery($title) as $item) $this->newsService->store($item);
             }
     }
 }

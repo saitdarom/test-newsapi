@@ -3,40 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\News\ListRequest;
 use App\Http\Resources\News\ListResource;
-use App\Jobs\GetNewsJob;
-use App\Models\News;
 use App\Services\NewsService;
 use Carbon\Carbon;
-use Event;
 use App\Events\GetNewsEvent;
 use Illuminate\Http\Request;
 
 
 class NewsController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
 
-
-    /**
-     * @todo по хорошему нужно сделать авторизацию. Проверка доступа через middleware в маршрутах.
-     *
-     * @param Request $request
-     * @param NewsService $service
-     * @return ListResource
-     * @throws \Illuminate\Validation\ValidationException
-     */
     public function list(Request $request, NewsService $service)
     {
+        // https://lumen.laravel.com/docs/9.x/validation
+        // По хорошему реквест/валидацию нужно выделить в отдельный класс.
+        // В документации написано делать в контроллере, иначе использовать полную версию LARAVEL.
         $this->validate($request, [
             'source' => 'nullable|min:3',
             'from'   => 'nullable|date_format:' . \DateTimeInterface::ATOM,
@@ -49,9 +30,7 @@ class NewsController extends Controller
             'title.min'        => 'title минимум 3 символа',
         ]);
 
-        $news = $service->list($request);
-        return new ListResource($news);
+        return new ListResource($service->list($request));
     }
 
-    //
 }
