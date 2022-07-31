@@ -9,8 +9,9 @@ use Carbon\Carbon;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
-class ApiNewsListTest extends TestCase
+class UsersTest extends TestCase
 {
+    use DatabaseTransactions;
     /**
      * A basic test example.
      *
